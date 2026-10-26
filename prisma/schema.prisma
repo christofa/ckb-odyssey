@@ -19,3 +19,41 @@ model Player {
   sporeMint    SporeMint?
 }
 
+model Progress {
+  id          Int       @id @default(autoincrement())
+  playerId    String
+  player      Player    @relation(fields: [playerId], references: [id])
+  questId     String
+  status      String    @default("in_progress") // in_progress | completed
+  attempts    Int       @default(0)
+  xpAwarded   Int       @default(0)
+  completedAt DateTime?
+
+  @@unique([playerId, questId])
+}
+
+model Badge {
+  playerId String
+  player   Player   @relation(fields: [playerId], references: [id])
+  badgeId  String
+  earnedAt DateTime @default(now())
+
+  @@id([playerId, badgeId])
+}
+
+model SporeMint {
+  playerId String   @id
+  player   Player   @relation(fields: [playerId], references: [id])
+  txHash   String
+  mintedAt DateTime @default(now())
+}
+
+model Admin {
+  address String @id
+}
+
+model AuthNonce {
+  address   String   @id
+  nonce     String
+  expiresAt DateTime
+}
