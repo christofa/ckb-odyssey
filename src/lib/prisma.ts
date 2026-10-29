@@ -1,5 +1,5 @@
-// // import { PrismaClient } from "@prisma/client"; // use the import path your generator produces
-// // import { PrismaLibSQL } from "@prisma/adapter-libsql";
+// import { PrismaClient } from "@prisma/client"; // use the import path your generator produces
+// import { PrismaLibSQL } from "@prisma/adapter-libsql";
 
 // const adapter = new PrismaLibSQL({
 //   url: process.env.TURSO_DATABASE_URL!,
