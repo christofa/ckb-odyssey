@@ -19,13 +19,22 @@ export function ConnectButton() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    fetch("/api/auth/me").then((r) => r.json()).then((d) => setSignedIn(!!d.playerId));
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((d) => setSignedIn(!!d.playerId));
   }, []);
 
   useEffect(() => {
-    if (!signer) return setAddress("");
-    signer.getRecommendedAddress().then(setAddress);
+    let cancelled = false;
+    signer?.getRecommendedAddress().then((a) => {
+      if (!cancelled) setAddress(a);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [signer]);
+
+  const shownAddress = signer ? address : "";
 
   async function signIn() {
     if (!signer) return;
@@ -62,7 +71,7 @@ export function ConnectButton() {
 
   return (
     <Button variant="outline" onClick={signOut}>
-      {address.slice(0, 8)}…{address.slice(-6)} · Sign out
+      {shownAddress.slice(0, 8)}…{shownAddress.slice(-6)} · Sign out
     </Button>
   );
 }
