@@ -19,7 +19,10 @@ export default function CreateCharacter() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, avatar }),
     });
-    if (!res.ok) return setError("Pick a name (2–20 characters) and make sure you're signed in.");
+   if (!res.ok) {
+  const data = await res.json().catch(() => ({}));
+  return setError(data.error ?? `Request failed (${res.status})`);
+}
     router.push("/map");
   }
 
